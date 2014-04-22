@@ -1,8 +1,8 @@
-module-platform-users
-=====================
+module-platform-menu
+====================
 
-This repository contains the source files for the Core9 Platform Users module.
-Build the file manager by running:
+This repository contains the source files for the Core9 Platform Menu module.
+Build the module by running:
 
     $ npm install
     $ grunt
