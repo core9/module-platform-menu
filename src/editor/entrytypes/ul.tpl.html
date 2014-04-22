@@ -1,0 +1,6 @@
+<ul ng-class="item.classes">
+	<h5 ng-click="edit()">{{item.name}}<h5>
+	<div ui-sortable ng-model="item.items">
+		<div ng-if="state.fresh" ng-repeat="inner in item.items" cn-menu-item cn-parent="item" cn-item="inner" cn-state="state"></div>
+	</div>
+</ul>

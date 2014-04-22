@@ -1,0 +1,33 @@
+<h1 class="page-header">
+	Menu management
+	<small><i class="icon-double-angle-right"></i> edit your menus</small>
+</h1>
+<blockquote>You can edit or delete your menus, select a menu from the list below.</blockquote>
+<fieldset>
+	<legend>Menus</legend>
+	<table class="table table-striped">
+		<tr>
+			<th>Name</th>
+			<th>Actions</th>
+		</tr>
+		<tr ng-repeat="menu in menus">
+			<td>{{menu.name}}</td>
+			<td>
+				<button class="btn btn-success" ng-click="edit(menu)"><i class="fa fa-pencil"></i></button>
+				<button class="btn btn-danger" ng-click="remove(menu)"><i class="fa fa-trash-o"></i></button>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="form-group">
+					<input ng-model="newName" type="text" placeholder="New menu name" class="form-control input-md" />
+				</div>
+			</td>
+			<td>
+				<button class="btn btn-success" ng-click="add(newName)">
+					<i class="fa fa-plus"></i> Add new menu
+				</button>
+			</td>
+		</tr>
+	</table>
+</fieldset>

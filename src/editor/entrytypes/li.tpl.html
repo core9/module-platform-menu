@@ -1,0 +1,4 @@
+<li>
+	<a class="{{(item.items.length > 0) ? 'dropdown-toggle' : ''}}" ng-click="edit()">{{item.name}} <b ng-if="item.items.length > 0" class="caret"></b></a>
+	<div ng-repeat="inner in item.items" cn-menu-item cn-parent="item" cn-item="inner" cn-state="state" />
+</li>

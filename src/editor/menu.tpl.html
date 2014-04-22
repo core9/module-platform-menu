@@ -1,0 +1,21 @@
+<h1 class="page-header">
+  Menu {{menu.name}}<small><i class="icon-double-angle-right"></i> manage your menu</small>
+</h1>
+<blockquote>
+You can edit your menu by click the item you wish to edit. Click the menu title to edit top level menu items. Click through your menu to edit those menu entries. You can also change the order of the menu by dragging and dropping the menu items to the place you want the item to be.
+</blockquote>
+<div>
+  <div ng-if="state.fresh" cn-menu-item cn-item="menu" cn-state="state"></div>
+  <div>
+    <div ng-if="state.showConfig">
+      <fieldset>
+        <legend>Edit menu item</legend>
+        <div cn-menu-item-config cn-menu="menu" cn-state="state" />
+      </fieldset>
+    </div>
+    <fieldset>
+      <legend>Menu actions</legend>
+      <button class="btn btn-success" ng-click="save()">Save</button>
+    </fieldset>
+  </div>
+</div>

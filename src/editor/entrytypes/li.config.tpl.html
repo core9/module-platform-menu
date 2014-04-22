@@ -1,0 +1,29 @@
+<div class="form-group row">
+  <label class="col-md-2 control-label" for="">Name</label>  
+  <div class="col-md-8">
+    <input ng-model="state.editItem.name" type="text" placeholder="Name" class="form-control input-md" />
+  </div>
+</div>
+<div class="form-group row">
+  <label class="col-md-2 control-label" for="">Link</label>  
+  <div class="col-md-8">
+    <input ng-model="state.editItem.link" type="text" placeholder="Classes" class="form-control input-md" />
+  </div>
+</div>
+<div class="row">
+  <fieldset class="col-md-12">
+    <legend>New subitem</legend>
+    <div class="input-group">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle">{{menuEntryTypes[newItem.type].name}} <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li ng-repeat="id in menuEntryTypes[state.editItem.type].childs track by $index"><a ng-click="newItem.type = id">{{menuEntryTypes[id].name}}</a></li>
+        </ul>
+      </div>
+      <input type="text" class="form-control" placeholder="New item name" ng-model="newItem.name" />
+      <div class="input-group-btn">
+        <button class="btn btn-success" ng-click="addItem(item, newItem)">Add item</button>
+      </div>
+    </div>
+  </fieldset>
+</div>

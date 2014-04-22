@@ -1,9 +1,0 @@
-<div ng-controller="FeatureProcessorUserCtrl">
-  <button class="btn btn-success" ng-click="add()" style="width: 100%">Add users</button>
-  <h6>Selected (<a ng-click="showSelected = !showSelected">toggle</a>)</h6>
-  <ul class="list-group" ng-show="showSelected">
-    <li ng-repeat="item in selected" class="list-group-item" ng-click="deselect($index)">
-      <a>{{item.id}}</a>
-    </li>
-  </ul>
-</div>

@@ -41,7 +41,12 @@ module.exports = function(grunt) {
       app: {
         options: {
           base: 'src',
-          module: 'templates-<%= pkg.name %>'
+          module: 'templates-<%= pkg.name %>',
+          prefix: '<%= pkg.tplprefix %>',
+          rename: function (moduleName) {
+            grunt.log.write(JSON.stringify(this));
+            return this.prefix + moduleName;
+          }
         },
         src: [ 'src/**/*.tpl.html' ],
         dest: 'build/templates.js'
