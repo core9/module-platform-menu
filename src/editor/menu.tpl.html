@@ -19,3 +19,50 @@ You can edit your menu by click the item you wish to edit. Click the menu title 
     </fieldset>
   </div>
 </div>
+<fieldset style="margin-top: 20px;">
+  <legend ng-click="showAdvanced = !showAdvanced">Advanced (toggle)</legend>
+  <div ng-show="showAdvanced">
+    <div class="col-md-4">
+      <div class="list-group">
+        <a ng-click="advanced = 'generate'" class="list-group-item" ng-class="{active: advanced === 'generate'}">
+          Generate menu from content
+        </a>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div ng-show="advanced === 'generate'" ng-controller="MenuEditorGeneratorCtrl">
+      <blockquote>You can generate a menu by using the content reference relationships</blockquote>
+      <div class="form-group row">
+        <label class="col-md-2 control-label" for="">Content type</label>
+          <div class="col-md-8">
+            <select ng-model="contenttype" ng-options="contenttype as contenttype.name for contenttype in contenttypes" class="form-control input-md"></select>
+          </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-2 control-label" for="">Referencing field</label>
+          <div class="col-md-8">
+            <select ng-model="field" ng-options="field as field.name for field in fields" class="form-control input-md"></select>
+          </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-2 control-label" for="">Title field</label>
+          <div class="col-md-8">
+            <select ng-model="titlefield" ng-options="field as field for (field, value) in contenttype.schemaOptions" class="form-control input-md"></select>
+          </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-2 control-label" for="">Link</label>
+          <div class="col-md-8">
+            <input type="text" ng-model="link" class="form-control input-md" />
+          </div>
+      </div>
+      <div class="form-group row">
+        <label class="col-md-2 control-label" for="">Actions</label>
+          <div class="col-md-8">
+            <button class="btn btn-success" ng-click="generate()">Generate</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</fieldset>

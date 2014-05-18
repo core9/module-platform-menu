@@ -161,6 +161,104 @@ angular.module('core9Dashboard.menueditor.app', [
   };
 })
 
+.controller("MenuEditorGeneratorCtrl", function($scope, ConfigFactory, ContentFactory) {
+  $scope.contenttypes = ConfigFactory.query({configtype: 'content'});
+
+  $scope.$watch('contenttype', function() {
+    if($scope.contenttype !== undefined) {
+      $scope.fields = $scope.getContentRefFields($scope.contenttype.schemaOptions);
+    }
+  });
+  
+  $scope.getContentRefFields = function(schemaOptions) {
+    if(schemaOptions !== undefined) {
+      var result = [];
+      var items, i;
+      for(var field in schemaOptions) {
+        if(field === 'widget' && schemaOptions[field] === 'contentref') {
+          result.push({name: 'this', field: schemaOptions});
+        } else if(typeof(schemaOptions[field]) === 'object') {
+          items = $scope.getContentRefFields(schemaOptions[field]);
+          for(i = 0; i < items.length; i++) {
+            if(items[i].name === 'this') {
+              if(field === 'items') {
+                items[i].field['qty'] = 'multiple';
+              } else {
+                items[i].name = field;
+              }
+            } else {
+              items[i].name = field + "." + items[i].name;
+            }
+            result.push(items[i]);
+          }
+        }
+      }
+      return result;
+    }
+  };
+
+  $scope.generate = function() {
+    ContentFactory.query({contenttype: $scope.contenttype.name}, function (data) {
+      var items = {};
+      for (var i = data.length - 1; i >= 0; i--) {
+        items[data[i]._id] = data[i];
+      }
+      for (i = data.length - 1; i >= 0; i--) {
+        if(data[i][$scope.field.name] !== undefined && data[i][$scope.field.name].length > 0) {
+          handleChildren(data[i], $scope.field.name, items);
+        }
+      }
+      $scope.$parent.menu.items = [];
+      for (var key in items) {
+        if(items[key][$scope.field.name] !== undefined && items[key][$scope.field.name].length > 0) {
+          var children = getChildMenuItems(items[key], $scope.field.name, $scope.titlefield, $scope.link);
+          console.log(children);
+          $scope.$parent.menu.items.push({type: 'navitem', name: items[key][$scope.titlefield], items: [children]});
+        } else {
+          $scope.$parent.menu.items.push({type: 'navitem', name: items[key][$scope.titlefield], link: $scope.link + key});
+        }
+      }
+      console.log($scope.$parent.menu);
+    });
+  };
+
+  function getChildMenuItems(item, fieldname, titlefield, link) {
+    console.log(item);
+    var result = {};
+    result.name = item[titlefield];
+    if(item[fieldname] !== undefined && item[fieldname].length > 0) {
+      result.items = [];
+      for (var i = item[fieldname].length - 1; i >= 0; i--) {
+        result.items.push(getChildMenuItems(item[fieldname][i].full, fieldname, titlefield, link));
+      }
+    }
+    if(result.items !== undefined) {
+      result.type = 'ul';
+    } else {
+      result.type = 'li';
+      result.link = link + item._id;
+    }
+    return result;
+  }
+
+  function handleChildren(item, field, items) {
+    if(item[field] === undefined) {
+      return;
+    }
+    for (var i = item[field].length - 1; i >= 0; i--) {
+      if(items[item[field][i].value] === undefined) {
+        alert("Item '" + item[field][i].key + "' is already used or doesn't exist.");
+      } else if(items[item[field][i].value][field] !== undefined && items[item[field][i].value][field].length > 0) {
+        // Check if sub level has items, recursively walk through them
+        handleChildren(items[item[field][i].value][field], field, items);
+      }
+      item[field][i].full = items[item[field][i].value];
+      items[item._id] = item;
+      delete items[item[field][i].value];
+    }
+  }
+})
+
 .controller('MenuEditorMenuCtrl', function($scope, $stateParams, ConfigFactory, MenuEntryTypes) {
   $scope.state = {fresh: true};
   $scope.menu = ConfigFactory.get({configtype: 'menu', id: $stateParams.id});
