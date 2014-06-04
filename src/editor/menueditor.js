@@ -103,7 +103,7 @@ angular.module('core9Dashboard.menueditor.app', [
         if(scope.state.editItem.type !== undefined) {
           scope.newItem = {type: MenuEntryTypes.getMenuEntryTypes()[scope.state.editItem.type].childs[0]};
           var itemConfig = $templateCache.get(MenuEntryTypes.getMenuEntryConfigTemplate(scope.state.editItem.type));
-          var actions = $templateCache.get("menueditor/entryactions.tpl.html");
+          var actions = $templateCache.get("menu-editor/entryactions.tpl.html");
           var e = $compile((itemConfig + actions))(scope);
           element.html(e);
         }
