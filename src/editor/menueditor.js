@@ -212,18 +212,25 @@ angular.module('core9Dashboard.menueditor.app', [
       for (var key in items) {
         if(items[key][$scope.field.name] !== undefined && items[key][$scope.field.name].length > 0) {
           var children = getChildMenuItems(items[key], $scope.field.name, $scope.titlefield, $scope.link);
-          console.log(children);
           $scope.$parent.menu.items.push({type: 'navitem', name: items[key][$scope.titlefield], items: [children]});
         } else {
-          $scope.$parent.menu.items.push({type: 'navitem', name: items[key][$scope.titlefield], link: $scope.link + key});
+          $scope.$parent.menu.items.push({type: 'navitem', name: items[key][$scope.titlefield], link: getLink($scope.link, items[key])});
         }
       }
       console.log($scope.$parent.menu);
     });
   };
 
+  function getLink(link, item) {
+    var groups = link.match(/:([A-Za-z0-9\-_]+)/g);
+    for (var d = groups.length - 1; d >= 0; d--) {
+      console.log(groups[d]);
+      link = link.replace(groups[d], item[groups[d].substring(1)]);
+    }
+    return link;
+  }
+
   function getChildMenuItems(item, fieldname, titlefield, link) {
-    console.log(item);
     var result = {};
     result.name = item[titlefield];
     if(item[fieldname] !== undefined && item[fieldname].length > 0) {
@@ -236,7 +243,7 @@ angular.module('core9Dashboard.menueditor.app', [
       result.type = 'ul';
     } else {
       result.type = 'li';
-      result.link = link + item._id;
+      result.link = getLink(link, item);
     }
     return result;
   }
